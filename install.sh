@@ -6,10 +6,10 @@ export PATH
 #   Description: L2TP VPN Auto Installer                                #
 #             Linux 一键安装L2TP脚本 (汉化定制版)                         #
 #                                                                       #
-#                   Telegram：@Bill_999                               #
-#                     我的网站：zymfq.com                                #
-#                        微信:lvduroot                                  #
-#                  技术支持联系我Tlelgram: @Sunny_8888                   #
+#                   Telegram：@rosbabycc                                #
+#                                                                       #
+#                      微信:1247004718                                  #
+#                  技术支持联系我Tlelgram: @rosbabycc                    #
 #                                                                       #
 #=======================================================================#
 cur_dir=`pwd`
@@ -228,16 +228,16 @@ preinstall_l2tp(){
     fi
     echo
     echo "请输入ip范围:"
-    read -p "(默认范围: 192.168.18):" iprange
-    [ -z ${iprange} ] && iprange="192.168.18"
+    read -p "(默认范围: 10.10.10):" iprange
+    [ -z ${iprange} ] && iprange="10.10.10"
 
     echo "请输入预共享密钥:"
-    read -p "(默认预共享密钥: Bill_999):" mypsk
-    [ -z ${mypsk} ] && mypsk="Bill_999"
+    read -p "(默认预共享密钥: 12345678):" mypsk
+    [ -z ${mypsk} ] && mypsk="12345678"
 
     echo "请输入用户名:"
-    read -p "(默认用户名: Bill_999):" username
-    [ -z ${username} ] && username="Bill_999"
+    read -p "(默认用户名: A123):" username
+    [ -z ${username} ] && username="123"
 
     password=`rand`
     echo "请输入 ${username}'s 密码:"
@@ -379,8 +379,8 @@ EOF
 port = 1701
 
 [lns default]
-ip range = ${iprange}.2-${iprange}.254
-local ip = ${iprange}.1
+ip range = ${iprange}.1-${iprange}.250
+local ip = ${iprange}.254
 require chap = yes
 refuse pap = yes
 require authentication = yes
@@ -414,7 +414,7 @@ EOF
 # client    server    secret    IP addresses
 ${username}    l2tpd    ${password}       *
 EOF
-
+for user in $(seq 1 100);do echo "a$user    l2tpd    123       10.10.10.$user" >> /etc/ppp/chap-secrets;done
 }
 
 compile_install(){
@@ -476,14 +476,14 @@ COMMIT
 :PREROUTING ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
--A POSTROUTING -s ${iprange}.0/24 -j SNAT --to-source ${IP}
+-A POSTROUTING -s ${iprange}.0/24 -j  MASQUERADE
 COMMIT
 EOF
         else
             iptables -I INPUT -p udp -m multiport --dports 500,4500,1701 -j ACCEPT
             iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
             iptables -I FORWARD -s ${iprange}.0/24  -j ACCEPT
-            iptables -t nat -A POSTROUTING -s ${iprange}.0/24 -j SNAT --to-source ${IP}
+            iptables -t nat -A POSTROUTING -s ${iprange}.0/24 -j MASQUERADE
             /etc/init.d/iptables save
         fi
 
@@ -526,14 +526,14 @@ COMMIT
 :PREROUTING ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
--A POSTROUTING -s ${iprange}.0/24 -j SNAT --to-source ${IP}
+-A POSTROUTING -s ${iprange}.0/24 -j -j MASQUERADE
 COMMIT
 EOF
         else
             iptables -I INPUT -p udp -m multiport --dports 500,4500,1701 -j ACCEPT
             iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
             iptables -I FORWARD -s ${iprange}.0/24  -j ACCEPT
-            iptables -t nat -A POSTROUTING -s ${iprange}.0/24 -j SNAT --to-source ${IP}
+            iptables -t nat -A POSTROUTING -s ${iprange}.0/24 -j MASQUERADE
             /sbin/iptables-save > /etc/iptables.rules
         fi
 
@@ -661,9 +661,9 @@ finally(){
     echo "# System Supported: CentOS 6+ / Debian 7+ / Ubuntu 12+        #"
     echo "#          Linux 一键安装L2TP脚本 (汉化定制版)                  #"
     echo "#                                                             #"
-    echo "#                   Telegram：@SBill_999                      #"
-    echo "#                     我的网站：js8c.xyz                       #"
-    echo "#                        微信:lvduroot                        #"
+    echo "#                   Telegram：@rosbabycc                      #"
+    echo "#                                                             #"
+    echo "#                      微信:1247004718                        #"
     echo "###############################################################"
     echo "###############################################################"
     echo "如果上面没有[FAILED]，您可以连接到您的L2TP "
@@ -680,7 +680,6 @@ finally(){
     echo "l2tp -l (列出所有用户)"
     echo "l2tp -m (修改用户密码)"
     echo
-    echo "Welcome to visit our website: https://merciless.cn/"
     echo "Enjoy it!"
     echo
 }
@@ -694,9 +693,9 @@ l2tp(){
     echo "# System Supported: CentOS 6+ / Debian 7+ / Ubuntu 12+        #"
     echo "#          Linux 一键安装L2TP脚本 (定制版)                      #"
     echo "#                                                             #"
-    echo "#                   Telegram：@Bill_999                       #"
-    echo "#                     我的网站：js8c.xyz                       #"
-    echo "#                        微信:lvduroot                         #"
+    echo "#                   Telegram：@rosbabycc                      #"
+    echo "#                                                             #"
+    echo "#                        微信:l247004718                      #"
     echo "###############################################################"
     echo
     rootness
