@@ -246,8 +246,8 @@ preinstall_l2tp(){
 
     echo
     echo "ServerIP:${IP}"
-    echo "Server Local IP:${iprange}.1"
-    echo "Client Remote IP Range:${iprange}.2-${iprange}.254"
+    echo "Server Local IP:${iprange}.254"
+    echo "Client Remote IP Range:${iprange}.1-${iprange}.250"
     echo "PSK:${mypsk}"
     echo
     echo "Press any key to start... or press Ctrl + C to cancel."
